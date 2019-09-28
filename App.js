@@ -1,21 +1,55 @@
-import React from "react";
+import React, {Component} from 'react';
+import { Container, View, Header, Left, Body, Right, Button, Title, Text, Thumbnail } from 'native-base';
 
-import { Provider } from "react-redux";
+type Props = {};
+export default class App extends Component<Props> {
+  constructor(props) {
+    super(props);
+    this.state = {
+       image: null,
+    }
+  }
 
-import store, { persistor } from "./containers/store"
+  showPicker = () => {
+    let ImagePicker = require('react-native-image-picker')
 
-import { PersistGate } from "redux-persist/es/integration/react"
+    let options = {
+      title: '画像を選択',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    }
 
-import Container from "./containers/index"
+    ImagePicker.showImagePicker(options, (response)  => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        console.log(response.uri)
+        this.setState({image: response.uri})
+      }
+    });
+  }
 
-export default class App extends React.Component {
   render() {
     return (
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Container />
-        </PersistGate>
-      </Provider>
+      <Container>
+        <Header>
+          <Left />
+          <Body>
+            <Title>メイン</Title>
+          </Body>
+          <Right />
+        </Header>
+        <View>
+          <Button small iconRight  transparent primary onPress={this.showPicker}>
+            <Text>画像の選択</Text>
+          </Button>
+          {this.state.image && <Thumbnail square large source={{uri: this.state.image}} />}
+        </View>
+      </Container>
     );
   }
 }

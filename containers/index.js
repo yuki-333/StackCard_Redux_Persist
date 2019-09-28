@@ -1,22 +1,20 @@
-import Home from "../components/Home";
-import { connect } from "react-redux";
+import React from "react";
 
-import { addTodo } from '../actions'
+import { Provider } from "react-redux";
 
+import store, { persistor } from "./containers/store"
 
-const mapStateToProps = state => {
-   return {
-       title: state.title,
-       word: state.words.list,
-   };
-};
+import { PersistGate } from "redux-persist/es/integration/react"
 
-const mapDispatchToProps = dispatch => {
-   return {
-       onAddToDo: word => {
-           dispatch(addTodo(word))
-       }
-   };
-};
+import Container from "./containers/index"
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Container />
+        </PersistGate>
+      </Provider>
+    );
+  }

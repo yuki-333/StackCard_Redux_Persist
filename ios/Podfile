@@ -34,6 +34,7 @@ target 'StackCard_Redux_Persist' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+
   target 'StackCard_Redux_PersistTests' do
     inherit! :search_paths
     # Pods for testing
